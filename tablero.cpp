@@ -46,20 +46,33 @@ void liberarTablero(unsigned char*& tab) {
     tab = 0;
 }
 
+bool leerCelda(const unsigned char* tab, int bytesFila, int fila, int col) {
+    int byteFila = col / 8;
+    int bit = 7 - (col % 8);
+    int pos = fila * bytesFila + byteFila;
+
+    return ((tab[pos] >> bit) & 1) == 1;
+}
+
+void cambiarCelda(unsigned char* tab, int bytesFila, int fila, int col, bool valor) {
+    int byteFila = col / 8;
+    int bit = 7 - (col % 8);
+    int pos = fila * bytesFila + byteFila;
+
+    if (valor) {
+        // prendo el bit
+        tab[pos] = tab[pos] | (1 << bit);
+    } else {
+        // apago el bit
+        tab[pos] = tab[pos] & ~(1 << bit);
+    }
+}
+
 void imprimirTablero(const unsigned char* tab,
                      int ancho, int alto, int bytesFila) {
     for (int fila = 0; fila < alto; fila++) {
         for (int col = 0; col < ancho; col++) {
-            // calculamos en que byte del array esta esta celda
-            int byteFila = col / 8;
-            // calculamos que bit dentro del byte (0-7)
-            int bit = 7 - (col % 8);
-            // posicion en el array: fila * bytesXfila + byte de la celda
-            int pos = fila * bytesFila + byteFila;
-
-            // extraemos el bit con shift y AND
-            // si el bit es 1, celda ocupada; si es 0, vacia
-            if ((tab[pos] >> bit) & 1) {
+            if (leerCelda(tab, bytesFila, fila, col)) {
                 cout << "#";
             } else {
                 cout << ".";

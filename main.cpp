@@ -1,5 +1,6 @@
 #include <iostream>
 #include "tablero.h"
+#include "pieza.h"
 
 using namespace std;
 
@@ -8,8 +9,10 @@ int main() {
     int ancho = 0;
     int alto = 0;
     int bytesFila = 0;      // cuantos bytes caben en cada fila
-    int tamTotal = 0;       // memoria total que necesitamos
-    unsigned char* tab = 0; // puntero al tablero dinamico
+    int tamTotal = 0;       // memoria total que necesitao
+    int filaPieza = 0;
+    int colPieza = 0;
+    unsigned char* tab = 0; // punteroal tablero dinamico
 
     cout << "Ancho del tablero (minimo 8, multiplo de 8): ";
     cin >> ancho;
@@ -38,6 +41,15 @@ int main() {
     cout << "bytes por fila: " << bytesFila << "\n";
     cout << "tamano total: " << tamTotal << "\n";
     cout << "\ntablero vacio:\n";
+    imprimirTablero(tab, ancho, alto, bytesFila);
+
+    if (!ponerPiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+        cout << "error: no se pudo poner la pieza\n";
+        liberarTablero(tab);
+        return 0;
+    }
+
+    cout << "\npieza O puesta arriba:\n";
     imprimirTablero(tab, ancho, alto, bytesFila);
 
     // liberamos la memoria que allocamos con new[] para evitar memory leak
