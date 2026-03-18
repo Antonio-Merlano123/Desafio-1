@@ -66,16 +66,22 @@ int main() {
         }
 
         if (op == 'a' || op == 'A') {
-            if (!moverPiezaOIzq(tab, bytesFila, filaPieza, colPieza)) {
+            if (!moverPiezaOIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
                 cout << "no se puede mover a la izquierda\n";
             }
         } else if (op == 'd' || op == 'D') {
-            if (!moverPiezaODer(tab, ancho, bytesFila, filaPieza, colPieza)) {
+            if (!moverPiezaODer(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
                 cout << "no se puede mover a la derecha\n";
             }
         } else if (op == 's' || op == 'S') {
-            if (!moverPiezaOAbajo(tab, alto, bytesFila, filaPieza, colPieza)) {
-                cout << "no se puede bajar mas\n";
+            if (!moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+                cout << "la pieza quedo fija\n";
+
+                // si no cabe una nueva pieza, termina el juego
+                if (!ponerPiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+                    cout << "game over\n";
+                    break;
+                }
             }
         } else {
             cout << "tecla no valida\n";

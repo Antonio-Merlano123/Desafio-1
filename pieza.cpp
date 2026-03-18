@@ -10,6 +10,25 @@ void marcarPiezaO(unsigned char* tab, int bytesFila,
     cambiarCelda(tab, bytesFila, filaPieza + 1, colPieza + 1, valor);
 }
 
+// revisa si la pieza O cabe en esa posicion
+bool cabePiezaO(const unsigned char* tab, int ancho, int alto, int bytesFila,
+               int filaPieza, int colPieza) {
+    if (filaPieza < 0 || colPieza < 0) {
+        return false;
+    }
+
+    if (filaPieza + 1 >= alto || colPieza + 1 >= ancho) {
+        return false;
+    }
+
+    if (leerCelda(tab, bytesFila, filaPieza, colPieza)) return false;
+    if (leerCelda(tab, bytesFila, filaPieza, colPieza + 1)) return false;
+    if (leerCelda(tab, bytesFila, filaPieza + 1, colPieza)) return false;
+    if (leerCelda(tab, bytesFila, filaPieza + 1, colPieza + 1)) return false;
+
+    return true;
+}
+
 bool ponerPiezaO(unsigned char* tab, int ancho, int alto, int bytesFila,
                  int& filaPieza, int& colPieza) {
     filaPieza = 0;
@@ -19,7 +38,7 @@ bool ponerPiezaO(unsigned char* tab, int ancho, int alto, int bytesFila,
         colPieza = 0;
     }
 
-    if (alto < 2 || colPieza + 1 >= ancho) {
+    if (!cabePiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
         return false;
     }
 
@@ -28,39 +47,57 @@ bool ponerPiezaO(unsigned char* tab, int ancho, int alto, int bytesFila,
     return true;
 }
 
-bool moverPiezaOIzq(unsigned char* tab, int bytesFila,
+bool moverPiezaOIzq(unsigned char* tab, int ancho, int alto, int bytesFila,
                     int& filaPieza, int& colPieza) {
     if (colPieza <= 0) {
         return false; // ya llego al borde
     }
 
     marcarPiezaO(tab, bytesFila, filaPieza, colPieza, false); // borro donde estaba
+
+    if (!cabePiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza - 1)) {
+        marcarPiezaO(tab, bytesFila, filaPieza, colPieza, true); // la dejo donde estaba
+        return false;
+    }
+
     colPieza = colPieza - 1;
     marcarPiezaO(tab, bytesFila, filaPieza, colPieza, true);  // dibujo en la nueva
 
     return true;
 }
 
-bool moverPiezaODer(unsigned char* tab, int ancho, int bytesFila,
+bool moverPiezaODer(unsigned char* tab, int ancho, int alto, int bytesFila,
                     int& filaPieza, int& colPieza) {
     if (colPieza + 2 >= ancho) {
         return false; // ya llego al borde
     }
 
     marcarPiezaO(tab, bytesFila, filaPieza, colPieza, false);
+
+    if (!cabePiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza + 1)) {
+        marcarPiezaO(tab, bytesFila, filaPieza, colPieza, true);
+        return false;
+    }
+
     colPieza = colPieza + 1;
     marcarPiezaO(tab, bytesFila, filaPieza, colPieza, true);
 
     return true;
 }
 
-bool moverPiezaOAbajo(unsigned char* tab, int alto, int bytesFila,
+bool moverPiezaOAbajo(unsigned char* tab, int ancho, int alto, int bytesFila,
                       int& filaPieza, int& colPieza) {
     if (filaPieza + 2 >= alto) {
         return false; // ya llego al fondo
     }
 
     marcarPiezaO(tab, bytesFila, filaPieza, colPieza, false);
+
+    if (!cabePiezaO(tab, ancho, alto, bytesFila, filaPieza + 1, colPieza)) {
+        marcarPiezaO(tab, bytesFila, filaPieza, colPieza, true);
+        return false;
+    }
+
     filaPieza = filaPieza + 1;
     marcarPiezaO(tab, bytesFila, filaPieza, colPieza, true);
 

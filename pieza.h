@@ -6,15 +6,15 @@ bool ponerPiezaO(unsigned char* tab, int ancho, int alto, int bytesFila,
                  int& filaPieza, int& colPieza);
 
 // mueve la pieza O una posicion a la izquierda
-bool moverPiezaOIzq(unsigned char* tab, int bytesFila,
+bool moverPiezaOIzq(unsigned char* tab, int ancho, int alto, int bytesFila,
                     int& filaPieza, int& colPieza);
 
 // mueve la pieza O una posicion a la derecha
-bool moverPiezaODer(unsigned char* tab, int ancho, int bytesFila,
+bool moverPiezaODer(unsigned char* tab, int ancho, int alto, int bytesFila,
                     int& filaPieza, int& colPieza);
 
 // mueve la pieza O una posicion hacia abajo
-bool moverPiezaOAbajo(unsigned char* tab, int alto, int bytesFila,
+bool moverPiezaOAbajo(unsigned char* tab, int ancho, int alto, int bytesFila,
                       int& filaPieza, int& colPieza);
 
 #endif
