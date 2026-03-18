@@ -78,3 +78,41 @@ void imprimirTablero(const unsigned char* tab,
         cout << '\n';
     }
 }
+
+bool filaLlena(const unsigned char* tab, int ancho, int bytesFila, int fila) {
+    for (int col = 0; col < ancho; col++) {
+        if (!leerCelda(tab, bytesFila, fila, col)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void borrarFila(unsigned char* tab, int ancho, int alto, int bytesFila, int fila) {
+    // bajo todo lo de arriba
+    for (int f = fila; f > 0; f--) {
+        for (int col = 0; col < ancho; col++) {
+            bool valorArriba = leerCelda(tab, bytesFila, f - 1, col);
+            cambiarCelda(tab, bytesFila, f, col, valorArriba);
+        }
+    }
+
+    // dejo vacia la fila de arriba de todo
+    for (int col = 0; col < ancho; col++) {
+        cambiarCelda(tab, bytesFila, 0, col, false);
+    }
+}
+
+int limpiarFilas(unsigned char* tab, int ancho, int alto, int bytesFila) {
+    int borradas = 0;
+
+    for (int fila = alto - 1; fila >= 0; fila--) {
+        if (filaLlena(tab, ancho, bytesFila, fila)) {
+            borrarFila(tab, ancho, alto, bytesFila, fila);
+            borradas = borradas + 1;
+            fila = fila + 1; // reviso de nuevo esta misma fila
+        }
+    }
+
+    return borradas;
+}

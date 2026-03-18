@@ -21,4 +21,13 @@ void cambiarCelda(unsigned char* tab, int bytesFila, int fila, int col, bool val
 // imprime tablero con # y .
 void imprimirTablero(const unsigned char* tab,int ancho, int alto, int bytesFila);
 
+// revisa si una fila esta llena
+bool filaLlena(const unsigned char* tab, int ancho, int bytesFila, int fila);
+
+// borra una fila y baja las de arriba
+void borrarFila(unsigned char* tab, int ancho, int alto, int bytesFila, int fila);
+
+// limpia todas las filas llenas y devuelve cuantas borro
+int limpiarFilas(unsigned char* tab, int ancho, int alto, int bytesFila);
+
 #endif

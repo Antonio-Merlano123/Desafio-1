@@ -77,6 +77,11 @@ int main() {
             if (!moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
                 cout << "la pieza quedo fija\n";
 
+                int filas = limpiarFilas(tab, ancho, alto, bytesFila);
+                if (filas > 0) {
+                    cout << "filas borradas: " << filas << "\n";
+                }
+
                 // si no cabe una nueva pieza, termina el juego
                 if (!ponerPiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
                     cout << "game over\n";
