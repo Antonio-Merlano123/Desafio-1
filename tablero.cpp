@@ -4,12 +4,12 @@
 using namespace std;
 
 bool validarDatos(int ancho, int alto) {
-    // tablero debe ser al menos 8x8
+    // minimo 8x8
     if (ancho < 8 || alto < 8) {
         return false;
     }
 
-    // ancho debe ser multiplo de 8 porque cada byte guarda 8 celdas
+    // el ancho tiene que ser multiplo de 8 para que quepan bien en bytes
     if (ancho % 8 != 0) {
         return false;
     }
@@ -20,18 +20,17 @@ bool validarDatos(int ancho, int alto) {
 bool crearTablero(int ancho, int alto,
                    int& bytesFila, int& tamTotal,
                    unsigned char*& tab) {
-    // calculamos cuantos bytes necesitamos por fila
-    // si ancho=16, necesitamos 16/8 = 2 bytes
+    // cuantos bytes necesito por fila
     bytesFila = ancho / 8;
     tamTotal = alto * bytesFila;
 
-    // allocamos memoria dinamica del tamaño calculado
+    // reservo la memoria
     tab = new unsigned char[tamTotal];
     if (tab == 0) {
-        return false; // si malloc falla, retornamos error
+        return false;
     }
 
-    // inicializamos todo en 0: tablero vacio (todos los bits en 0)
+    // arranco con todo en 0, tablero vacio
     for (int i = 0; i < tamTotal; i++) {
         tab[i] = 0;
     }
@@ -40,10 +39,8 @@ bool crearTablero(int ancho, int alto,
 }
 
 void liberarTablero(unsigned char*& tab) {
-    // liberamos la memoria que allocamos con new[]
     delete[] tab;
-    // seteamos a null para evitar usar puntero invalido
-    tab = 0;
+    tab = 0; // lo pongo en 0 para no usarlo por error
 }
 
 bool leerCelda(const unsigned char* tab, int bytesFila, int fila, int col) {
