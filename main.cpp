@@ -28,7 +28,7 @@ int main() {
     int alto = 0;
     int bytesFila = 0;  // bytes por fila
     int tamTotal = 0;  // tamano total del tablero
-    int tipoPieza = 0;
+    int tipoPieza = 0; // 0 O, 1 I
     int filaPieza = 0;
     int colPieza = 0;
     char op = ' ';
@@ -73,7 +73,7 @@ int main() {
     cout << "\npieza inicial puesta arriba:\n";
     imprimirTablero(tab, ancho, alto, bytesFila);
 
-    // aqui probamos mover con teclado
+    // aqui juego por turnos
     while (true) {
         bool bajoManual = false;
 
@@ -99,15 +99,15 @@ int main() {
             }
         } else if (op == 's' || op == 'S') {
             bajoManual = true;
-            bool bajo = false;
+            bool pudoBajar = false;
 
             if (tipoPieza == 0) {
-                bajo = moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+                pudoBajar = moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
             } else {
-                bajo = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+                pudoBajar = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
             }
 
-            if (!bajo) {
+            if (!pudoBajar) {
                 if (!fijarYSeguir(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza)) {
                     break;
                 }
@@ -119,15 +119,15 @@ int main() {
 
         // si no fue s, igual baja una por turno
         if (!bajoManual) {
-            bool bajo = false;
+            bool pudoBajar = false;
 
             if (tipoPieza == 0) {
-                bajo = moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+                pudoBajar = moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
             } else {
-                bajo = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+                pudoBajar = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
             }
 
-            if (!bajo) {
+            if (!pudoBajar) {
                 if (!fijarYSeguir(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza)) {
                     break;
                 }

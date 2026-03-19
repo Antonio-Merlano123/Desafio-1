@@ -2,7 +2,7 @@
 #include "tablero.h"
 #include <cstdlib>
 
-// funcion interna: prende o apaga la pieza O
+// esta me ayuda a dibujar o borrar la O
 void marcarPiezaO(unsigned char* tab, int bytesFila,
                  int filaPieza, int colPieza, bool valor) {
     cambiarCelda(tab, bytesFila, filaPieza, colPieza, valor);
@@ -11,7 +11,7 @@ void marcarPiezaO(unsigned char* tab, int bytesFila,
     cambiarCelda(tab, bytesFila, filaPieza + 1, colPieza + 1, valor);
 }
 
-// funcion interna: prende o apaga la pieza I vertical
+// esta me ayuda a dibujar o borrar la I vertical
 void marcarPiezaI(unsigned char* tab, int bytesFila,
                  int filaPieza, int colPieza, bool valor) {
     cambiarCelda(tab, bytesFila, filaPieza, colPieza, valor);
@@ -20,7 +20,7 @@ void marcarPiezaI(unsigned char* tab, int bytesFila,
     cambiarCelda(tab, bytesFila, filaPieza + 3, colPieza, valor);
 }
 
-// revisa si la pieza O cabe en esa posicion
+// revisa si la O cabe en esa posicion
 bool cabePiezaO(const unsigned char* tab, int ancho, int alto, int bytesFila,
                int filaPieza, int colPieza) {
     if (filaPieza < 0 || colPieza < 0) {
@@ -39,7 +39,7 @@ bool cabePiezaO(const unsigned char* tab, int ancho, int alto, int bytesFila,
     return true;
 }
 
-// revisa si la pieza I vertical cabe en esa posicion
+// revisa si la I vertical cabe en esa posicion
 bool cabePiezaI(const unsigned char* tab, int ancho, int alto, int bytesFila,
                int filaPieza, int colPieza) {
     if (filaPieza < 0 || colPieza < 0) {
