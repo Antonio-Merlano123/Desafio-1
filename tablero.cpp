@@ -17,24 +17,12 @@ bool validarDatos(int ancho, int alto) {
     return true;
 }
 
-bool crearTablero(int ancho, int alto,
-                   int& bytesFila, int& tamTotal,
-                   unsigned char*& tab) {
-    // cuantos bytes necesito por fila
+bool crearTablero(int ancho, int alto, int& bytesFila, int& tamTotal, unsigned char*& tab) {
     bytesFila = ancho / 8;
     tamTotal = alto * bytesFila;
-
-    // reservo la memoria
     tab = new unsigned char[tamTotal];
-    if (tab == 0) {
-        return false;
-    }
-
-    // arranco con todo en 0, tablero vacio
-    for (int i = 0; i < tamTotal; i++) {
-        tab[i] = 0;
-    }
-
+    if (tab == 0) return false;
+    for (int i = 0; i < tamTotal; i++) tab[i] = 0; // arranco vacio
     return true;
 }
 
@@ -65,17 +53,13 @@ void cambiarCelda(unsigned char* tab, int bytesFila, int fila, int col, bool val
     }
 }
 
-void imprimirTablero(const unsigned char* tab,
-                     int ancho, int alto, int bytesFila) {
+void imprimirTablero(const unsigned char* tab, int ancho, int alto, int bytesFila) {
     for (int fila = 0; fila < alto; fila++) {
         for (int col = 0; col < ancho; col++) {
-            if (leerCelda(tab, bytesFila, fila, col)) {
-                cout << "#";
-            } else {
-                cout << ".";
-            }
+            if (leerCelda(tab, bytesFila, fila, col)) cout << "#";
+            else cout << ".";
         }
-        cout << '\n';
+        cout << "\n";
     }
 }
 

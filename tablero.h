@@ -4,22 +4,20 @@
 // valida reglas del tablero
 bool validarDatos(int ancho, int alto);
 
-// crea tablero dinamico y lo deja vacio
-bool crearTablero(int ancho, int alto,
-                   int& bytesFila, int& tamTotal,
-                   unsigned char*& tab);
+// crea el tablero dinamico y lo deja vacio
+bool crearTablero(int ancho, int alto, int& bytesFila, int& tamTotal, unsigned char*& tab);
 
-// libera memoria
+// libera la memoria del tablero
 void liberarTablero(unsigned char*& tab);
 
-// revisa si una celda esta prendida o apagada
+// devuelve true si la celda esta prendida
 bool leerCelda(const unsigned char* tab, int bytesFila, int fila, int col);
 
 // prende o apaga una celda
 void cambiarCelda(unsigned char* tab, int bytesFila, int fila, int col, bool valor);
 
-// imprime tablero con # y .
-void imprimirTablero(const unsigned char* tab,int ancho, int alto, int bytesFila);
+// imprime el tablero con # y .
+void imprimirTablero(const unsigned char* tab, int ancho, int alto, int bytesFila);
 
 // revisa si una fila esta llena
 bool filaLlena(const unsigned char* tab, int ancho, int bytesFila, int fila);
