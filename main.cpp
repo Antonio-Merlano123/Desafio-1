@@ -4,6 +4,24 @@
 
 using namespace std;
 
+bool fijarYSeguir(unsigned char* tab, int ancho, int alto, int bytesFila,
+                 int& filaPieza, int& colPieza) {
+    cout << "la pieza quedo fija\n";
+
+    int filas = limpiarFilas(tab, ancho, alto, bytesFila);
+    if (filas > 0) {
+        cout << "filas borradas: " << filas << "\n";
+    }
+
+    // si no cabe una nueva pieza, termina
+    if (!ponerPiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+        cout << "game over\n";
+        return false;
+    }
+
+    return true;
+}
+
 int main() {
     int ancho = 0;
     int alto = 0;
@@ -53,6 +71,8 @@ int main() {
 
     // aqui probamos mover con teclado
     while (true) {
+        bool bajoManual = false;
+
         cout << "\naccion: a izq, d der, s abajo, q salir: ";
         cin >> op;
 
@@ -74,22 +94,24 @@ int main() {
                 cout << "no se puede mover a la derecha\n";
             }
         } else if (op == 's' || op == 'S') {
+            bajoManual = true;
             if (!moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
-                cout << "la pieza quedo fija\n";
-
-                int filas = limpiarFilas(tab, ancho, alto, bytesFila);
-                if (filas > 0) {
-                    cout << "filas borradas: " << filas << "\n";
-                }
-
-                // si no cabe una nueva pieza, termina el juego
-                if (!ponerPiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
-                    cout << "game over\n";
+                if (!fijarYSeguir(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
                     break;
                 }
             }
         } else {
             cout << "tecla no valida\n";
+            continue;
+        }
+
+        // si no fue s, igual baja una por turno
+        if (!bajoManual) {
+            if (!moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+                if (!fijarYSeguir(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+                    break;
+                }
+            }
         }
 
         cout << "\ntablero:\n";
