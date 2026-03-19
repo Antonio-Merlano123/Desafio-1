@@ -174,3 +174,39 @@ bool moverPiezaIAbajo(unsigned char* tab, int ancho, int alto, int bytesFila,
     marcarPiezaI(tab, bytesFila, filaPieza, colPieza, true);
     return true;
 }
+
+bool moverPiezaIIzq(unsigned char* tab, int ancho, int alto, int bytesFila,
+                    int& filaPieza, int& colPieza) {
+    if (colPieza <= 0) {
+        return false;
+    }
+
+    marcarPiezaI(tab, bytesFila, filaPieza, colPieza, false);
+
+    if (!cabePiezaI(tab, ancho, alto, bytesFila, filaPieza, colPieza - 1)) {
+        marcarPiezaI(tab, bytesFila, filaPieza, colPieza, true);
+        return false;
+    }
+
+    colPieza = colPieza - 1;
+    marcarPiezaI(tab, bytesFila, filaPieza, colPieza, true);
+    return true;
+}
+
+bool moverPiezaIDer(unsigned char* tab, int ancho, int alto, int bytesFila,
+                    int& filaPieza, int& colPieza) {
+    if (colPieza + 1 >= ancho) {
+        return false;
+    }
+
+    marcarPiezaI(tab, bytesFila, filaPieza, colPieza, false);
+
+    if (!cabePiezaI(tab, ancho, alto, bytesFila, filaPieza, colPieza + 1)) {
+        marcarPiezaI(tab, bytesFila, filaPieza, colPieza, true);
+        return false;
+    }
+
+    colPieza = colPieza + 1;
+    marcarPiezaI(tab, bytesFila, filaPieza, colPieza, true);
+    return true;
+}

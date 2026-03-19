@@ -90,11 +90,27 @@ int main() {
         }
 
         if (op == 'a' || op == 'A') {
-            if (tipoPieza == 0 && !moverPiezaOIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+            bool pudoMover = false;
+
+            if (tipoPieza == 0) {
+                pudoMover = moverPiezaOIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            } else {
+                pudoMover = moverPiezaIIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            }
+
+            if (!pudoMover) {
                 cout << "no se puede mover a la izquierda\n";
             }
         } else if (op == 'd' || op == 'D') {
-            if (tipoPieza == 0 && !moverPiezaODer(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+            bool pudoMover = false;
+
+            if (tipoPieza == 0) {
+                pudoMover = moverPiezaODer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            } else {
+                pudoMover = moverPiezaIDer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            }
+
+            if (!pudoMover) {
                 cout << "no se puede mover a la derecha\n";
             }
         } else if (op == 's' || op == 'S') {

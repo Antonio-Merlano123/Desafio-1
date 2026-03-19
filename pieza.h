@@ -29,4 +29,12 @@ bool moverPiezaOAbajo(unsigned char* tab, int ancho, int alto, int bytesFila,
 bool moverPiezaIAbajo(unsigned char* tab, int ancho, int alto, int bytesFila,
                       int& filaPieza, int& colPieza);
 
+// mueve una pieza I a la izquierda
+bool moverPiezaIIzq(unsigned char* tab, int ancho, int alto, int bytesFila,
+                    int& filaPieza, int& colPieza);
+
+// mueve una pieza I a la derecha
+bool moverPiezaIDer(unsigned char* tab, int ancho, int alto, int bytesFila,
+                    int& filaPieza, int& colPieza);
+
 #endif
