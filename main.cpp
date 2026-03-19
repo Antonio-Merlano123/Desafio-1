@@ -1,11 +1,12 @@
 #include <iostream>
+#include <ctime>
 #include "tablero.h"
 #include "pieza.h"
 
 using namespace std;
 
 bool fijarYSeguir(unsigned char* tab, int ancho, int alto, int bytesFila,
-                 int& filaPieza, int& colPieza) {
+                 int& tipoPieza, int& filaPieza, int& colPieza) {
     cout << "la pieza quedo fija\n";
 
     int filas = limpiarFilas(tab, ancho, alto, bytesFila);
@@ -14,7 +15,7 @@ bool fijarYSeguir(unsigned char* tab, int ancho, int alto, int bytesFila,
     }
 
     // si no cabe una nueva pieza, termina
-    if (!ponerPiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+    if (!ponerPiezaAleatoria(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza)) {
         cout << "game over\n";
         return false;
     }
@@ -27,6 +28,7 @@ int main() {
     int alto = 0;
     int bytesFila = 0;  // bytes por fila
     int tamTotal = 0;  // tamano total del tablero
+    int tipoPieza = 0;
     int filaPieza = 0;
     int colPieza = 0;
     char op = ' ';
@@ -60,13 +62,15 @@ int main() {
     cout << "\ntablero vacio:\n";
     imprimirTablero(tab, ancho, alto, bytesFila);
 
-    if (!ponerPiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+    srand((unsigned int)time(0));
+
+    if (!ponerPiezaAleatoria(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza)) {
         cout << "error: no se pudo poner la pieza\n";
         liberarTablero(tab);
         return 0;
     }
 
-    cout << "\npieza O puesta arriba:\n";
+    cout << "\npieza inicial puesta arriba:\n";
     imprimirTablero(tab, ancho, alto, bytesFila);
 
     // aqui probamos mover con teclado
@@ -86,17 +90,25 @@ int main() {
         }
 
         if (op == 'a' || op == 'A') {
-            if (!moverPiezaOIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+            if (tipoPieza == 0 && !moverPiezaOIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
                 cout << "no se puede mover a la izquierda\n";
             }
         } else if (op == 'd' || op == 'D') {
-            if (!moverPiezaODer(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+            if (tipoPieza == 0 && !moverPiezaODer(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
                 cout << "no se puede mover a la derecha\n";
             }
         } else if (op == 's' || op == 'S') {
             bajoManual = true;
-            if (!moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
-                if (!fijarYSeguir(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+            bool bajo = false;
+
+            if (tipoPieza == 0) {
+                bajo = moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            } else {
+                bajo = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            }
+
+            if (!bajo) {
+                if (!fijarYSeguir(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza)) {
                     break;
                 }
             }
@@ -107,8 +119,16 @@ int main() {
 
         // si no fue s, igual baja una por turno
         if (!bajoManual) {
-            if (!moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
-                if (!fijarYSeguir(tab, ancho, alto, bytesFila, filaPieza, colPieza)) {
+            bool bajo = false;
+
+            if (tipoPieza == 0) {
+                bajo = moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            } else {
+                bajo = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            }
+
+            if (!bajo) {
+                if (!fijarYSeguir(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza)) {
                     break;
                 }
             }
