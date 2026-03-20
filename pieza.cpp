@@ -38,6 +38,13 @@ void marcarPiezaL(unsigned char* tab, int bytesFila, int filaPieza, int colPieza
     cambiarCelda(tab, bytesFila, filaPieza + 2, colPieza + 1, valor);
 }
 
+void marcarPiezaS(unsigned char* tab, int bytesFila, int filaPieza, int colPieza, bool valor) {
+    cambiarCelda(tab, bytesFila, filaPieza, colPieza + 1, valor);
+    cambiarCelda(tab, bytesFila, filaPieza, colPieza + 2, valor);
+    cambiarCelda(tab, bytesFila, filaPieza + 1, colPieza, valor);
+    cambiarCelda(tab, bytesFila, filaPieza + 1, colPieza + 1, valor);
+}
+
 bool cabePiezaO(const unsigned char* tab, int ancho, int alto, int bytesFila, int filaPieza, int colPieza) {
     int f = filaPieza;
     int c = colPieza;
@@ -94,6 +101,18 @@ bool cabePiezaL(const unsigned char* tab, int ancho, int alto, int bytesFila, in
     return true;
 }
 
+bool cabePiezaS(const unsigned char* tab, int ancho, int alto, int bytesFila, int filaPieza, int colPieza) {
+    int f = filaPieza;
+    int c = colPieza;
+    if (f < 0 || c < 0) return false;
+    if (f + 1 >= alto || c + 2 >= ancho) return false;
+    if (leerCelda(tab, bytesFila, f, c + 1)) return false;
+    if (leerCelda(tab, bytesFila, f, c + 2)) return false;
+    if (leerCelda(tab, bytesFila, f + 1, c)) return false;
+    if (leerCelda(tab, bytesFila, f + 1, c + 1)) return false;
+    return true;
+}
+
 bool ponerPiezaO(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza) {
     filaPieza = 0;
     colPieza = ancho / 2 - 1;
@@ -130,8 +149,17 @@ bool ponerPiezaL(unsigned char* tab, int ancho, int alto, int bytesFila, int& fi
     return true;
 }
 
+bool ponerPiezaS(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza) {
+    filaPieza = 0;
+    colPieza = ancho / 2 - 1;
+    if (colPieza < 0) colPieza = 0;
+    if (!cabePiezaS(tab, ancho, alto, bytesFila, filaPieza, colPieza)) return false;
+    marcarPiezaS(tab, bytesFila, filaPieza, colPieza, true);
+    return true;
+}
+
 bool ponerPiezaAleatoria(unsigned char* tab, int ancho, int alto, int bytesFila, int& tipoPieza, int& filaPieza, int& colPieza, int& giroI) {
-    tipoPieza = rand() % 4; // 0 O, 1 I, 2 T, 3 L
+    tipoPieza = rand() % 5; // 0 O, 1 I, 2 T, 3 L, 4 S
     if (tipoPieza == 0) {
         giroI = 0;
         return ponerPiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza);
@@ -141,7 +169,8 @@ bool ponerPiezaAleatoria(unsigned char* tab, int ancho, int alto, int bytesFila,
     }
     giroI = 0;
     if (tipoPieza == 2) return ponerPiezaT(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-    return ponerPiezaL(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+    if (tipoPieza == 3) return ponerPiezaL(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+    return ponerPiezaS(tab, ancho, alto, bytesFila, filaPieza, colPieza);
 }
 
 bool moverPiezaOIzq(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza) {
@@ -247,6 +276,41 @@ bool moverPiezaLAbajo(unsigned char* tab, int ancho, int alto, int bytesFila, in
     }
     filaPieza = filaPieza + 1;
     marcarPiezaL(tab, bytesFila, filaPieza, colPieza, true);
+    return true;
+}
+
+bool moverPiezaSIzq(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza) {
+    if (colPieza <= 0) return false;
+    marcarPiezaS(tab, bytesFila, filaPieza, colPieza, false);
+    if (!cabePiezaS(tab, ancho, alto, bytesFila, filaPieza, colPieza - 1)) {
+        marcarPiezaS(tab, bytesFila, filaPieza, colPieza, true);
+        return false;
+    }
+    colPieza = colPieza - 1;
+    marcarPiezaS(tab, bytesFila, filaPieza, colPieza, true);
+    return true;
+}
+
+bool moverPiezaSDer(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza) {
+    if (colPieza + 3 >= ancho) return false;
+    marcarPiezaS(tab, bytesFila, filaPieza, colPieza, false);
+    if (!cabePiezaS(tab, ancho, alto, bytesFila, filaPieza, colPieza + 1)) {
+        marcarPiezaS(tab, bytesFila, filaPieza, colPieza, true);
+        return false;
+    }
+    colPieza = colPieza + 1;
+    marcarPiezaS(tab, bytesFila, filaPieza, colPieza, true);
+    return true;
+}
+
+bool moverPiezaSAbajo(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza) {
+    marcarPiezaS(tab, bytesFila, filaPieza, colPieza, false);
+    if (!cabePiezaS(tab, ancho, alto, bytesFila, filaPieza + 1, colPieza)) {
+        marcarPiezaS(tab, bytesFila, filaPieza, colPieza, true);
+        return false;
+    }
+    filaPieza = filaPieza + 1;
+    marcarPiezaS(tab, bytesFila, filaPieza, colPieza, true);
     return true;
 }
 
