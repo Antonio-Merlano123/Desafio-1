@@ -9,7 +9,6 @@ void marcarPiezaO(unsigned char* tab, int bytesFila, int filaPieza, int colPieza
     cambiarCelda(tab, bytesFila, filaPieza + 1, colPieza + 1, valor);
 }
 
-// la I puede estar vertical u horizontal
 void marcarPiezaI(unsigned char* tab, int bytesFila, int filaPieza, int colPieza, int giro, bool valor) {
     if (giro == 0) {
         cambiarCelda(tab, bytesFila, filaPieza, colPieza, valor);
@@ -190,10 +189,10 @@ bool ponerPiezaAleatoria(unsigned char* tab, int ancho, int alto, int bytesFila,
 }
 
 bool moverPiezaOIzq(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza) {
-    if (colPieza <= 0) return false; // ya llego al borde
-    marcarPiezaO(tab, bytesFila, filaPieza, colPieza, false); // borro donde estaba
+    if (colPieza <= 0) return false;
+    marcarPiezaO(tab, bytesFila, filaPieza, colPieza, false);
     if (!cabePiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza - 1)) {
-        marcarPiezaO(tab, bytesFila, filaPieza, colPieza, true); // la dejo donde estaba
+        marcarPiezaO(tab, bytesFila, filaPieza, colPieza, true);
         return false;
     }
     colPieza = colPieza - 1;
@@ -202,7 +201,7 @@ bool moverPiezaOIzq(unsigned char* tab, int ancho, int alto, int bytesFila, int&
 }
 
 bool moverPiezaODer(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza) {
-    if (colPieza + 2 >= ancho) return false; // ya llego al borde
+    if (colPieza + 2 >= ancho) return false;
     marcarPiezaO(tab, bytesFila, filaPieza, colPieza, false);
     if (!cabePiezaO(tab, ancho, alto, bytesFila, filaPieza, colPieza + 1)) {
         marcarPiezaO(tab, bytesFila, filaPieza, colPieza, true);
@@ -214,7 +213,7 @@ bool moverPiezaODer(unsigned char* tab, int ancho, int alto, int bytesFila, int&
 }
 
 bool moverPiezaOAbajo(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza) {
-    if (filaPieza + 2 >= alto) return false; // ya llego al fondo
+    if (filaPieza + 2 >= alto) return false;
     marcarPiezaO(tab, bytesFila, filaPieza, colPieza, false);
     if (!cabePiezaO(tab, ancho, alto, bytesFila, filaPieza + 1, colPieza)) {
         marcarPiezaO(tab, bytesFila, filaPieza, colPieza, true);

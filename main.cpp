@@ -33,19 +33,16 @@ int main() {
     cout << "Alto del tablero (minimo 8): ";
     cin >> alto;
 
-    // si no entro un numero, salgo
     if (!cin) {
         cout << "entrada invalida\n";
         return 0;
     }
 
-    // reviso que el tamano sea valido
     if (!validarDatos(ancho, alto)) {
         cout << "error: dimensiones invalidas\n";
         return 0;
     }
 
-    // pido memoria para el tablero
     if (!crearTablero(ancho, alto, bytesFila, tamTotal, tab)) {
         cout << "error: no se pudo crear tablero\n";
         return 0;
@@ -67,7 +64,6 @@ int main() {
     cout << "\npieza inicial puesta arriba:\n";
     imprimirTablero(tab, ancho, alto, bytesFila);
 
-    // aqui juego por turnos
     while (true) {
         bool bajoManual = false;
 
@@ -125,7 +121,6 @@ int main() {
             continue;
         }
 
-        // aunque no baje manual, igual toca bajar una fila por turno
         if (!bajoManual) {
             bool pudoBajar = false;
             if (tipoPieza == 0) pudoBajar = moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
@@ -142,7 +137,6 @@ int main() {
         imprimirTablero(tab, ancho, alto, bytesFila);
     }
 
-    // libero la memoria antes de salir
     liberarTablero(tab);
     return 0;
 }

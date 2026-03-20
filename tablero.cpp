@@ -4,12 +4,10 @@
 using namespace std;
 
 bool validarDatos(int ancho, int alto) {
-    // minimo 8x8
     if (ancho < 8 || alto < 8) {
         return false;
     }
 
-    // el ancho tiene que ser multiplo de 8 para que quepan bien en bytes
     if (ancho % 8 != 0) {
         return false;
     }
@@ -28,7 +26,7 @@ bool crearTablero(int ancho, int alto, int& bytesFila, int& tamTotal, unsigned c
 
 void liberarTablero(unsigned char*& tab) {
     delete[] tab;
-    tab = 0; // lo pongo en 0 para no usarlo por error
+    tab = 0;
 }
 
 bool leerCelda(const unsigned char* tab, int bytesFila, int fila, int col) {
@@ -45,10 +43,8 @@ void cambiarCelda(unsigned char* tab, int bytesFila, int fila, int col, bool val
     int pos = fila * bytesFila + byteFila;
 
     if (valor) {
-        // prendo el bit
         tab[pos] = tab[pos] | (1 << bit);
     } else {
-        // apago el bit
         tab[pos] = tab[pos] & ~(1 << bit);
     }
 }
@@ -73,7 +69,6 @@ bool filaLlena(const unsigned char* tab, int ancho, int bytesFila, int fila) {
 }
 
 void borrarFila(unsigned char* tab, int ancho, int alto, int bytesFila, int fila) {
-    // bajo todo lo de arriba
     for (int f = fila; f > 0; f--) {
         for (int col = 0; col < ancho; col++) {
             bool valorArriba = leerCelda(tab, bytesFila, f - 1, col);
@@ -81,7 +76,6 @@ void borrarFila(unsigned char* tab, int ancho, int alto, int bytesFila, int fila
         }
     }
 
-    // dejo vacia la fila de arriba de todo
     for (int col = 0; col < ancho; col++) {
         cambiarCelda(tab, bytesFila, 0, col, false);
     }
@@ -94,7 +88,7 @@ int limpiarFilas(unsigned char* tab, int ancho, int alto, int bytesFila) {
         if (filaLlena(tab, ancho, bytesFila, fila)) {
             borrarFila(tab, ancho, alto, bytesFila, fila);
             borradas = borradas + 1;
-            fila = fila + 1; // reviso de nuevo esta misma fila
+            fila = fila + 1;
         }
     }
 
