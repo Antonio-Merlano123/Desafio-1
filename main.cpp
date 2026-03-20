@@ -21,7 +21,7 @@ int main() {
     int alto = 0;
     int bytesFila = 0;
     int tamTotal = 0;
-    int tipoPieza = 0; // 0=O 1=I
+    int tipoPieza = 0; // 0=O 1=I 2=T 3=L
     int filaPieza = 0;
     int colPieza = 0;
     int giroI = 0;
@@ -86,18 +86,24 @@ int main() {
         if (op == 'a' || op == 'A') {
             bool pudoIzq = false;
             if (tipoPieza == 0) pudoIzq = moverPiezaOIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-            else pudoIzq = moverPiezaIIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI);
+            else if (tipoPieza == 1) pudoIzq = moverPiezaIIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI);
+            else if (tipoPieza == 2) pudoIzq = moverPiezaTIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            else pudoIzq = moverPiezaLIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza);
             if (!pudoIzq) cout << "ya no puede ir mas a la izquierda\n";
         } else if (op == 'd' || op == 'D') {
             bool pudoDer = false;
             if (tipoPieza == 0) pudoDer = moverPiezaODer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-            else pudoDer = moverPiezaIDer(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI);
+            else if (tipoPieza == 1) pudoDer = moverPiezaIDer(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI);
+            else if (tipoPieza == 2) pudoDer = moverPiezaTDer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            else pudoDer = moverPiezaLDer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
             if (!pudoDer) cout << "ya no puede ir mas a la derecha\n";
         } else if (op == 's' || op == 'S') {
             bajoManual = true;
             bool pudoBajar = false;
             if (tipoPieza == 0) pudoBajar = moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-            else pudoBajar = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI);
+            else if (tipoPieza == 1) pudoBajar = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI);
+            else if (tipoPieza == 2) pudoBajar = moverPiezaTAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            else pudoBajar = moverPiezaLAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
             if (!pudoBajar) {
                 if (!fijarYSeguir(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza, giroI)) break;
             }
@@ -117,7 +123,9 @@ int main() {
         if (!bajoManual) {
             bool pudoBajar = false;
             if (tipoPieza == 0) pudoBajar = moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-            else pudoBajar = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI);
+            else if (tipoPieza == 1) pudoBajar = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI);
+            else if (tipoPieza == 2) pudoBajar = moverPiezaTAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            else pudoBajar = moverPiezaLAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
             if (!pudoBajar) {
                 if (!fijarYSeguir(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza, giroI)) break;
             }
