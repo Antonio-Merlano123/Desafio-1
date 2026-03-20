@@ -5,7 +5,7 @@
 bool ponerPiezaO(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza);
 
 // pone una pieza I vertical arriba
-bool ponerPiezaI(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int& giroI);
+bool ponerPiezaI(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int& giro);
 
 // pone una pieza T fija (sin rotar)
 bool ponerPiezaT(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza);
@@ -14,10 +14,10 @@ bool ponerPiezaT(unsigned char* tab, int ancho, int alto, int bytesFila, int& fi
 bool ponerPiezaL(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza);
 
 // pone una pieza S fija (sin rotar)
-bool ponerPiezaS(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza);
+bool ponerPiezaS(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int& giro);
 
 // pone una pieza aleatoria (0=O 1=I 2=T 3=L 4=S)
-bool ponerPiezaAleatoria(unsigned char* tab, int ancho, int alto, int bytesFila, int& tipoPieza, int& filaPieza, int& colPieza, int& giroI);
+bool ponerPiezaAleatoria(unsigned char* tab, int ancho, int alto, int bytesFila, int& tipoPieza, int& filaPieza, int& colPieza, int& giro);
 
 // mueve la pieza O una posicion a la izquierda
 bool moverPiezaOIzq(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza);
@@ -39,20 +39,23 @@ bool moverPiezaLDer(unsigned char* tab, int ancho, int alto, int bytesFila, int&
 bool moverPiezaLAbajo(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza);
 
 // mueve una pieza S
-bool moverPiezaSIzq(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza);
-bool moverPiezaSDer(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza);
-bool moverPiezaSAbajo(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza);
+bool moverPiezaSIzq(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int giro);
+bool moverPiezaSDer(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int giro);
+bool moverPiezaSAbajo(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int giro);
 
 // mueve una pieza I hacia abajo
-bool moverPiezaIAbajo(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int giroI);
+bool moverPiezaIAbajo(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int giro);
 
 // mueve una pieza I a la izquierda
-bool moverPiezaIIzq(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int giroI);
+bool moverPiezaIIzq(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int giro);
 
 // mueve una pieza I a la derecha
-bool moverPiezaIDer(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int giroI);
+bool moverPiezaIDer(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int giro);
 
 // rota la pieza I (vertical y horizontal)
-bool rotarPiezaI(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int& giroI);
+bool rotarPiezaI(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int& giro);
+
+// rota la pieza S
+bool rotarPiezaS(unsigned char* tab, int ancho, int alto, int bytesFila, int& filaPieza, int& colPieza, int& giro);
 
 #endif

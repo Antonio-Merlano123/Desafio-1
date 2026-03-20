@@ -5,11 +5,11 @@
 
 using namespace std;
 
-bool fijarYSeguir(unsigned char* tab, int ancho, int alto, int bytesFila, int& tipoPieza, int& filaPieza, int& colPieza, int& giroI) {
+bool fijarYSeguir(unsigned char* tab, int ancho, int alto, int bytesFila, int& tipoPieza, int& filaPieza, int& colPieza, int& giro) {
     cout << "pieza fija\n";
     int filas = limpiarFilas(tab, ancho, alto, bytesFila);
     if (filas > 0) cout << "borre " << filas << " filas\n";
-    if (!ponerPiezaAleatoria(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza, giroI)) {
+    if (!ponerPiezaAleatoria(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza, giro)) {
         cout << "game over\n";
         return false;
     }
@@ -24,7 +24,7 @@ int main() {
     int tipoPieza = 0; // 0=O 1=I 2=T 3=L 4=S
     int filaPieza = 0;
     int colPieza = 0;
-    int giroI = 0;
+    int giro = 0;
     char op = ' ';
     unsigned char* tab = 0;
 
@@ -58,7 +58,7 @@ int main() {
 
     srand((unsigned int)time(0));
 
-    if (!ponerPiezaAleatoria(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza, giroI)) {
+    if (!ponerPiezaAleatoria(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza, giro)) {
         cout << "error: no se pudo poner la pieza\n";
         liberarTablero(tab);
         return 0;
@@ -86,33 +86,36 @@ int main() {
         if (op == 'a' || op == 'A') {
             bool pudoIzq = false;
             if (tipoPieza == 0) pudoIzq = moverPiezaOIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-            else if (tipoPieza == 1) pudoIzq = moverPiezaIIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI);
+            else if (tipoPieza == 1) pudoIzq = moverPiezaIIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro);
             else if (tipoPieza == 2) pudoIzq = moverPiezaTIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza);
             else if (tipoPieza == 3) pudoIzq = moverPiezaLIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-            else pudoIzq = moverPiezaSIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            else pudoIzq = moverPiezaSIzq(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro);
             if (!pudoIzq) cout << "ya no puede ir mas a la izquierda\n";
         } else if (op == 'd' || op == 'D') {
             bool pudoDer = false;
             if (tipoPieza == 0) pudoDer = moverPiezaODer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-            else if (tipoPieza == 1) pudoDer = moverPiezaIDer(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI);
+            else if (tipoPieza == 1) pudoDer = moverPiezaIDer(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro);
             else if (tipoPieza == 2) pudoDer = moverPiezaTDer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
             else if (tipoPieza == 3) pudoDer = moverPiezaLDer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-            else pudoDer = moverPiezaSDer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            else pudoDer = moverPiezaSDer(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro);
             if (!pudoDer) cout << "ya no puede ir mas a la derecha\n";
         } else if (op == 's' || op == 'S') {
             bajoManual = true;
             bool pudoBajar = false;
             if (tipoPieza == 0) pudoBajar = moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-            else if (tipoPieza == 1) pudoBajar = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI);
+            else if (tipoPieza == 1) pudoBajar = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro);
             else if (tipoPieza == 2) pudoBajar = moverPiezaTAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
             else if (tipoPieza == 3) pudoBajar = moverPiezaLAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-            else pudoBajar = moverPiezaSAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            else pudoBajar = moverPiezaSAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro);
             if (!pudoBajar) {
-                if (!fijarYSeguir(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza, giroI)) break;
+                if (!fijarYSeguir(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza, giro)) break;
             }
         } else if (op == 'w' || op == 'W') {
             if (tipoPieza == 1) {
-                if (!rotarPiezaI(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI))
+                if (!rotarPiezaI(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro))
+                    cout << "no se puede rotar\n";
+            } else if (tipoPieza == 4) {
+                if (!rotarPiezaS(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro))
                     cout << "no se puede rotar\n";
             } else {
                 cout << "esa pieza no rota por ahora\n";
@@ -126,12 +129,12 @@ int main() {
         if (!bajoManual) {
             bool pudoBajar = false;
             if (tipoPieza == 0) pudoBajar = moverPiezaOAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-            else if (tipoPieza == 1) pudoBajar = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza, giroI);
+            else if (tipoPieza == 1) pudoBajar = moverPiezaIAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro);
             else if (tipoPieza == 2) pudoBajar = moverPiezaTAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
             else if (tipoPieza == 3) pudoBajar = moverPiezaLAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-            else pudoBajar = moverPiezaSAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            else pudoBajar = moverPiezaSAbajo(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro);
             if (!pudoBajar) {
-                if (!fijarYSeguir(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza, giroI)) break;
+                if (!fijarYSeguir(tab, ancho, alto, bytesFila, tipoPieza, filaPieza, colPieza, giro)) break;
             }
         }
 
