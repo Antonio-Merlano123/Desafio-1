@@ -104,23 +104,11 @@ int main() {
         } else if (op == 'd' || op == 'D') {
             bool seMovio = false;
 
-            switch (tipoPieza) {
-            case 0:
-                seMovio = moverPiezaODer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-                break;
-            case 1:
-                seMovio = moverPiezaIDer(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro);
-                break;
-            case 2:
-                seMovio = moverPiezaTDer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-                break;
-            case 3:
-                seMovio = moverPiezaLDer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
-                break;
-            default:
-                seMovio = moverPiezaSDer(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro);
-                break;
-            }
+            if (tipoPieza == 0) seMovio = moverPiezaODer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            else if (tipoPieza == 1) seMovio = moverPiezaIDer(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro);
+            else if (tipoPieza == 2) seMovio = moverPiezaTDer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            else if (tipoPieza == 3) seMovio = moverPiezaLDer(tab, ancho, alto, bytesFila, filaPieza, colPieza);
+            else seMovio = moverPiezaSDer(tab, ancho, alto, bytesFila, filaPieza, colPieza, giro);
 
             if (!seMovio) cout << "ya no puede ir mas a la derecha\n";
         } else if (op == 's' || op == 'S') {
