@@ -4,15 +4,8 @@
 using namespace std;
 
 bool validarDatos(int ancho, int alto) {
-    if (ancho < 8 || alto < 8) {
-        return false;
-    }
-
-    if (ancho % 8 != 0) {
-        return false;
-    }
-
-    return true;
+    if (ancho < 8 || alto < 8) return false;
+    return (ancho % 8) == 0;
 }
 
 bool crearTablero(int ancho, int alto, int& bytesFila, int& tamTotal, unsigned char*& tab) {
@@ -20,7 +13,13 @@ bool crearTablero(int ancho, int alto, int& bytesFila, int& tamTotal, unsigned c
     tamTotal = alto * bytesFila;
     tab = new unsigned char[tamTotal];
     if (tab == 0) return false;
-    for (int i = 0; i < tamTotal; i++) tab[i] = 0; // arranco vacio
+
+    int i = 0;
+    while (i < tamTotal) {
+        tab[i] = 0;
+        i++;
+    }
+
     return true;
 }
 
@@ -42,38 +41,38 @@ void cambiarCelda(unsigned char* tab, int bytesFila, int fila, int col, bool val
     int bit = 7 - (col % 8);
     int pos = fila * bytesFila + byteFila;
 
-    if (valor) {
-        tab[pos] = tab[pos] | (1 << bit);
-    } else {
-        tab[pos] = tab[pos] & ~(1 << bit);
-    }
+    if (valor) tab[pos] |= (1 << bit);
+    else tab[pos] &= ~(1 << bit);
 }
 
 void imprimirTablero(const unsigned char* tab, int ancho, int alto, int bytesFila) {
     for (int fila = 0; fila < alto; fila++) {
         for (int col = 0; col < ancho; col++) {
-            if (leerCelda(tab, bytesFila, fila, col)) cout << "#";
-            else cout << ".";
+            char c = '.';
+            if (leerCelda(tab, bytesFila, fila, col)) c = '#';
+            cout << c;
         }
         cout << "\n";
     }
 }
 
 bool filaLlena(const unsigned char* tab, int ancho, int bytesFila, int fila) {
-    for (int col = 0; col < ancho; col++) {
-        if (!leerCelda(tab, bytesFila, fila, col)) {
-            return false;
-        }
+    int col = 0;
+    while (col < ancho) {
+        if (!leerCelda(tab, bytesFila, fila, col)) return false;
+        col++;
     }
     return true;
 }
 
-void borrarFila(unsigned char* tab, int ancho, int alto, int bytesFila, int fila) {
-    for (int f = fila; f > 0; f--) {
+void borrarFila(unsigned char* tab, int ancho, int bytesFila, int fila) {
+    int f = fila;
+    while (f > 0) {
         for (int col = 0; col < ancho; col++) {
             bool valorArriba = leerCelda(tab, bytesFila, f - 1, col);
             cambiarCelda(tab, bytesFila, f, col, valorArriba);
         }
+        f--;
     }
 
     for (int col = 0; col < ancho; col++) {
@@ -84,12 +83,14 @@ void borrarFila(unsigned char* tab, int ancho, int alto, int bytesFila, int fila
 int limpiarFilas(unsigned char* tab, int ancho, int alto, int bytesFila) {
     int borradas = 0;
 
-    for (int fila = alto - 1; fila >= 0; fila--) {
+    int fila = alto - 1;
+    while (fila >= 0) {
         if (filaLlena(tab, ancho, bytesFila, fila)) {
-            borrarFila(tab, ancho, alto, bytesFila, fila);
-            borradas = borradas + 1;
-            fila = fila + 1;
+            borrarFila(tab, ancho, bytesFila, fila);
+            borradas++;
+            fila++;
         }
+        fila--;
     }
 
     return borradas;
